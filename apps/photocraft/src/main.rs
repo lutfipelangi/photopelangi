@@ -99,7 +99,7 @@ fn automation_workspace(
 }
 
 /// The app's name in its default agent folder, `Documents/ArtCraft/Agents/PhotoCraft`.
-const AGENT_APP_NAME: &str = "PhotoCraft";
+const AGENT_APP_NAME: &str = "PhotoPelangi";
 
 /// [`automation_workspace`] with `default` as the default agent folder (tests use a temporary one).
 fn automation_workspace_in(
@@ -164,7 +164,7 @@ fn control_port_for(cli: Option<u16>, prefs: &photocraft_engine::prefs::Integrat
 fn native_options(frame: &Frame) -> eframe::NativeOptions {
     let viewport = egui::ViewportBuilder::default().with_icon(app_icon::viewport_icon(std::env::current_exe().ok().as_deref()));
     let viewport =
-        viewport.with_app_id(APP_ID).with_title("PhotoCraft").with_inner_size([1440.0, 900.0]).with_min_inner_size(MIN_WINDOW_SIZE).with_drag_and_drop(true);
+        viewport.with_app_id(APP_ID).with_title("PhotoPelangi").with_inner_size([1440.0, 900.0]).with_min_inner_size(MIN_WINDOW_SIZE).with_drag_and_drop(true);
     eframe::NativeOptions {
         viewport: window_policy::apply(viewport, frame),
         centered: true,
@@ -552,7 +552,7 @@ fn main() -> eframe::Result {
     let created_in_callback = app_created.clone();
     let started_sentinel = sentinel.clone();
     let result = eframe::run_native(
-        "PhotoCraft",
+        "PhotoPelangi",
         options,
         Box::new(move |cc| {
             created_in_callback.store(true, std::sync::atomic::Ordering::Relaxed);
