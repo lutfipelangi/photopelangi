@@ -122,3 +122,14 @@ winresource = "0.1"
 # Opt-in native save-back acceptance transports embedded sources through engine JSON.
 base64 = "=0.22.1"
 egui_kittest = { workspace = true, features = ["wgpu", "snapshot", "eframe"] }
+
+[package.metadata.deb]
+name = "photopelangi"
+maintainer = "Lutfi Mubtadi <kiospelangi.com>"
+section = "graphics"
+priority = "optional"
+assets = [
+    ["target/release/photocraft", "usr/bin/", "755"],
+    ["../../packaging/linux/photopelangi.desktop", "usr/share/applications/", "644"],
+    ["../../packaging/linux/photopelangi.png", "usr/share/icons/hicolor/256x256/apps/photopelangi.png", "644"],
+]
