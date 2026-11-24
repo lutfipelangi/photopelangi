@@ -1,0 +1,60 @@
+name: Windows Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-windows:
+    name: Build PhotoPelangi Windows x64
+    runs-on: windows-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout PhotoPelangi
+        uses: actions/checkout@v4
+
+      - name: Setup MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.100.0
+          targets: x86_64-pc-windows-msvc
+
+      - name: Checkout craft-i18n
+        shell: pwsh
+        run: |
+          $dir = "$env:RUNNER_TEMP\craft-i18n"
+          git clone https://github.com/storytold/craft-i18n.git $dir
+          git -C $dir checkout e56d26244bbac099bfd42e23fb12f78a4be418a7
+          "CRAFT_I18N_DIR=$dir" >> $env:GITHUB_ENV
+          "CRAFT_I18N_REQUIRED=1" >> $env:GITHUB_ENV
+
+      - name: Install WiX v5
+        shell: pwsh
+        run: |
+          dotnet tool install --global wix --version 5.0.2
+          $toolPath = "$env:USERPROFILE\.dotnet\tools"
+          $env:PATH = "$toolPath;$env:PATH"
+          $toolPath >> $env:GITHUB_PATH
+          wix extension add -g WixToolset.UI.wixext/5.0.2
+          wix extension add -g WixToolset.Util.wixext/5.0.2
+
+      - name: Build Windows packages
+        shell: pwsh
+        run: |
+          pwsh packaging/windows/package.ps1 -Arch x64
+
+      - name: Upload Windows artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: PhotoPelangi-Windows-x64
+          path: dist/release/*
+          if-no-files-found: error
+          retention-days: 30
