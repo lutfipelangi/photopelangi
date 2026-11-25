@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Checkout PhotoPelangi
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup MSVC
         uses: ilammy/msvc-dev-cmd@v1
@@ -52,7 +52,7 @@ jobs:
           pwsh packaging/windows/package.ps1 -Arch x64
 
       - name: Upload Windows artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: PhotoPelangi-Windows-x64
           path: dist/release/*
